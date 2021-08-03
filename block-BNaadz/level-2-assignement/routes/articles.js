@@ -4,7 +4,6 @@ var Article = require('../models/Article')
 var Comment = require('../models/Comment')
 var auth = require('../middlewares/auth')
 
-
 // likes and dislikes
 
 router.get('/:id/article/likes', (req,res,next) => {
@@ -30,6 +29,7 @@ router.get('/new',auth.loggedInUser, (req,res,next) => {
 
 router.post('/addarticle/new',auth.loggedInUser, (req,res,next) => {
     // console.log(req.body)
+    req.body.author = req.user.id;
     Article.create(req.body, (err,article) => {
         if(err) return next(err);
         console.log(err,article)
@@ -48,13 +48,13 @@ router.get('/allarticles', (req,res,next) => {
 
 
 // each article 
-
 router.get('/:id', (req,res,next) => {
     let user = req.user;
     let id = req.params.id;
+    let error = req.flash('error')[0]
     Article.findById(id).populate('comments').exec((err, eacharticle) => {
         if(err) return next(err);
-        res.render('eachArticle', {eacharticle, user : user})
+        res.render('eachArticle', {eacharticle, user : user, error})
     });
 })
 
@@ -62,10 +62,16 @@ router.use(auth.loggedInUser)
 
 router.get('/:id/article/edit', (req,res,next) => {
     let id = req.params.id;
+    let currentUserId = req.user.id;
     let user = req.user;
     Article.findById(id,(err, editarticle) => {
         if(err) return next(err);
-        res.render('articleEdit', {editarticle, user})
+        if(currentUserId != editarticle.author.toString()){
+            req.flash('error', "You are not authorized to this article")
+            res.redirect('/articles/' + id)
+        }else{
+            res.render('articleEdit', {editarticle, user})
+        }
     })
 })
 
@@ -73,7 +79,12 @@ router.post('/:id/article/edit', (req,res,next) => {
     let id = req.params.id;
     Article.findByIdAndUpdate(id,req.body,(err,updatearticle) => {
         if(err) return next(err);
-        res.redirect('/articles/' + id)
+        if(currentUserId != editarticle.author.toString()){
+            req.flash('error', "You are not authorized to this article")
+            res.redirect('/articles/' + id)
+        }else{
+            res.render('articleEdit', {editarticle, user})
+        }
     })
 })
 

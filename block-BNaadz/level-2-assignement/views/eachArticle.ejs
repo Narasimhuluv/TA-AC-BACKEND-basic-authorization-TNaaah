@@ -1,7 +1,9 @@
 <% include partials/header.ejs %> 
 
-
     <main class=" w-full">
+        <% if(error){%>
+           <p><%= error %> </p>
+        <%} %> 
         <section class=" w-screen">
             <div class="  m-10">
                 <h2 class="text-green-500 text-2xl font-bold"><%= eacharticle.title  %> </h2>
