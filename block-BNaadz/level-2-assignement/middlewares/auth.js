@@ -1,4 +1,5 @@
-var User = require('../models/User')
+var User = require('../models/User');
+var Article = require('../models/Article')
 module.exports = {
     loggedInUser : (req,res,next) => {
         if(req.session && req.session.userId){
@@ -21,6 +22,18 @@ module.exports = {
             req.session.user = null
             next();
         }
-    } 
+    },
+    // userAllow : (req,res,next) => {
+    //     var id = req.params.id;
+    //     Article.findOne(id).populate('name , email').exec((err, article) => {
+    //         if(err) return next(err);
+    //         if(req.session.userId === article.name.id){
+    //             next();
+    //         }else{
+    //             res.redirect('/articles/' + id)
+    //         }
+    //     })
+        
+    // } 
     
 }
