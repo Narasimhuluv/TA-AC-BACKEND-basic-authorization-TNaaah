@@ -1,0 +1,15 @@
+<% include partials/header.ejs %> 
+
+<main class="h-screen">
+    <section class="flex justify-center items-center h-4/6">
+        <form action="/admin/<%=updateproduct.id  %>/updated  " method="POST" class="w-4/12 border-2 p-8">
+            <h2 class="text-xl">Add Product</h2>
+            <input class="border-2 w-full mt-5 py-2 px-2 rounded-md focus:outline-none focus:border-green-400" type="text" name="image" value="<%= updateproduct.image %> ">
+            <input class="border-2 w-full mt-5 py-2 px-2 rounded-md focus:outline-none focus:border-green-400" type="text" name="name" value="<%=updateproduct.name %> ">
+            <input class="border-2 w-full mt-5 py-2 px-2 rounded-md focus:outline-none focus:border-green-400" type="number" name="quantity" value="<%=updateproduct.quantity  %> " placeholder="Enter Quantity">
+            <input class="border-2 w-full mt-5 py-2 px-2 rounded-md focus:outline-none focus:border-green-400" type="number" name="price" value="<%=updateproduct.price  %> " placeholder="Enter Price of Product">
+            <!-- <input class="border-2 w-full mt-5 py-2 px-2 rounded-md focus:outline-none focus:border-green-400" type="text" name="likes" placeholder="Enter likes"> -->
+            <input class="border-2 w-full mt-5 py-2 px-2 rounded-md focus:outline-none focus:border-green-400" type="submit">
+        </form>
+    </section>
+</main>
